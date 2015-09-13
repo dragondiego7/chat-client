@@ -1,0 +1,19 @@
+<div class="row">
+	<div class="col col-xs-10 col-xs-offset-1 col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-lg-3 col-lg-offset-4">
+		<div class="login centered">
+			<form name="formLogin">
+				<fieldset>
+					<legend>Login</legend>
+					<div ng-show="msgErro" class="alert alert-danger" role="alert">
+						{{msgErro}}
+					</div>
+					<div class="form-group">
+						<input type="text" id="login" name="login" ng-model="login" class="form-control col-xs-12" placeholder="Login">
+						<input type="password" id="senha" name="senha" ng-model="senha" class="form-control col-xs-12" placeholder="Senha">
+						<button type="button" id="btn-entrar" class="btn btn-primary col-xs-12" ng-click="entrar(login, senha)">Entrar</button>
+					</div>
+				</fieldset>
+			</form>
+		</div>
+	</div>
+</div>

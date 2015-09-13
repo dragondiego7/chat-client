@@ -1,0 +1,20 @@
+body {
+	margin: 0px;
+	padding: 0px;
+}
+
+a.contato {
+	background: black;
+}
+
+a.contato {
+	text-decoration: none;
+}
+
+.contatos .lista-de-contatos .contato img {
+	width: 64px;	
+}
+
+.chat img {
+	width: 128px;
+}

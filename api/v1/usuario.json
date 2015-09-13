@@ -1,0 +1,25 @@
+{
+	"success": true,
+	"usuarios": [
+		{
+			"login": "anaclara",
+			"avatar": "api/v1/usuario/avatar/anaclara.jpg",
+			"status": 0
+		},
+		{
+			"login": "kassiaoli",
+			"avatar": "api/v1/usuario/avatar/kassiaoli.jpg",
+			"status": 0
+		},
+		{
+			"login": "nickolasdaniel",
+			"avatar": "api/v1/usuario/avatar/nickolasdaniel.jpg",
+			"status": 0
+		},
+		{
+			"login": "ricardoledo",
+			"avatar": "api/v1/usuario/avatar/ricardoledo.jpg",
+			"status": 0
+		}
+	]
+}
