@@ -109,7 +109,7 @@ angular.module("chat.home", []).config(
 		});
 	}
 
-	$scope.conn = io.connect("http://env-5323080.jelasticlw.com.br:3000");
+	$scope.conn = io.connect("http://env-5323080.jelasticlw.com.br:8080");
 	$scope.conn.on("connect", function() {
 		$scope.conn.on("mensagem-presenca", function(mensagemPresenca) {
 			recebePresenca(mensagemPresenca);
