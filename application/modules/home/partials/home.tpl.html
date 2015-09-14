@@ -1,25 +1,22 @@
-<script type="text/javascript" src="assets/js/home.js"></script>
-<div class="row">
-	<div class="contatos col-xs-12 col-sm-4 col-md-3"
-		style="border: 1px solid black">
-		<div class="row">
-			<form name="form-procurar" class="form">
-				<div class="form-group col-xs-10 col-md-10 col-sm-10">
-					<input type="text" class="form-control" id="procurar"
-						name="procurar" ng-model="procurar">
-				</div>
-				<div class="form-group col-xs-2 col-md-2 col-sm-2">
-					<button type="button" class="btn btn-primary">+</button>
+<div class="row content">
+	<div class="col-left col-xs-12 col-sm-4 col-md-3">
+		<div class="row form-procurar">
+			<form class="form">
+				<div class="form-group">
+					<input type="text" ng-model="procurar" class="form-control"
+						placeholder="Procurar..."> <span
+						class="glyphicon glyphicon glyphicon-search form-control-feedback"
+						aria-hidden="true"></span>
 				</div>
 			</form>
 		</div>
-		<div class="row">
+		<div class="row contatos">
 			<ul class="list-group lista-de-contatos">
 				<li class="list-group-item"
 					ng-repeat="contato in contatos | filter: procurar | orderBy: '-status'"
 					data-contato-login="{{ contato.login }}"><a
 					href="javascript:void(0)" class="contato"
-					ng-click="iniciaConversa({{contato}})">
+					ng-click="iniciaConversa('{{contato.login}}')">
 						<div class="media">
 							<div class="media-left">
 								<img class="media-object img-responsive img-thumbnail"
@@ -29,6 +26,8 @@
 								<h4 class="media-heading">{{ contato.login }}</h4>
 								<span ng-show="contato.status == 0" class="label label-default">offline</span>
 								<span ng-show="contato.status == 1" class="label label-success">online</span>
+								<span ng-hide="contato.msgsNaoLidas == 0" class="badge">{{
+									contato.msgsNaoLidas }}</span>
 							</div>
 						</div>
 				</a></li>
@@ -36,38 +35,46 @@
 		</div>
 	</div>
 	<div ng-show="::destinatario"
-		class="chat hidden-xs col-xs-12 col-sm-8 col-md-9"
-		style="border: 1px solid black">
-		<div class="row">
-			<div class="media">
-				<div class="media-left">
-					<img class="media-object img-responsive img-thumbnail"
-						src="{{ destinatario.avatar }}" alt="{{ destinatario.login }}">
-				</div>
-				<div class="media-body">
-					<h4 class="media-heading">{{ destinatario.login }}</h4>
-				</div>
+		class="col-right hidden-xs col-xs-12 col-sm-8 col-md-9"
+		ng-swipe-right="exibeContatos()">
+		<div class="media perfil-destinatario">
+			<div class="media-left">
+				<img class="media-object img-responsive img-thumbnail"
+					src="{{ destinatario.avatar }}" alt="{{ destinatario.login }}">
+			</div>
+			<div class="media-body">
+				<h4 class="media-heading">{{ destinatario.login }}</h4>
 			</div>
 		</div>
-		<div class="row">
-			<form name="form-chat">
-				<div class="form-group col-sm-12 offset-0">
-					<textarea class="form-control" rows="5"></textarea>
+		<div class="row chat">
+			<div class="form-group col-sm-12 offset-0 mensagens">
+				<div class="mensagem {{mensagem.tipo}}"
+					ng-repeat="mensagem in destinatario.historico">
+					<p
+						ng-class="{'bg-success': mensagem.tipo == 'mensagem-recebida', 'bg-info': mensagem.tipo == 'mensagem-enviada'}">{{mensagem.corpo.mensagem}}</p>
 				</div>
-				<div class="form-group col-sm-11 offset-0">
-					<textarea class="form-control" id="mensagem" name="mensagem"
-						rows="2"></textarea>
-				</div>
-				<div class="form-group col-sm-1 offset-0">
-					<button type="button" id="btn-enviar" class="btn btn-primary"
-						ng-click="enviaMensagem(destinatario)">Enviar</button>
+			</div>
+			<form name="formChat" ng-submit="enviaMensagem(destinatario)">
+				<div class="form-group col-xs-12 offset-0">
+					<div class="input-group">
+						<textarea class="form-control" id="mensagem" name="mensagem" ng-model="mensagem" required="required" ng-minlength="1" ng-trim="true"
+							rows="2" my-keypress-enter="formChat.$valid && enviaMensagem(destinatario)"></textarea>
+						<div class="input-group-addon" id="btn-enviar"
+							ng-click="formChat.$valid && formChat">Enviar</div>
+					</div>
 				</div>
 			</form>
 		</div>
 	</div>
 	<div ng-hide="::destinatario"
-		class="apresentacao hidden-xs col-xs-12 col-sm-8 col-md-9"
-		style="border: 1px solid black">
-		<h1>Aproveite =)</h1>
+		class="apresentacao hidden-xs col-xs-12 col-sm-8 col-md-9">
+		<div class="jumbotron">
+			<h1>Hello, world!</h1>
+			<p>...</p>
+			<p>
+				<a class="btn btn-primary btn-lg" href="#" role="button">Learn
+					more</a>
+			</p>
+		</div>
 	</div>
 </div>

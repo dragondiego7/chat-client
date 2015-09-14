@@ -3,23 +3,35 @@
 	"usuarios": [
 		{
 			"login": "anaclara",
-			"avatar": "api/v1/usuario/avatar/anaclara.jpg",
-			"status": 0
+			"avatar": "api/v1/usuario/avatar/anaclara.jpg"
 		},
 		{
 			"login": "kassiaoli",
-			"avatar": "api/v1/usuario/avatar/kassiaoli.jpg",
-			"status": 0
+			"avatar": "api/v1/usuario/avatar/kassiaoli.jpg"
 		},
 		{
 			"login": "nickolasdaniel",
-			"avatar": "api/v1/usuario/avatar/nickolasdaniel.jpg",
-			"status": 0
+			"avatar": "api/v1/usuario/avatar/nickolasdaniel.jpg"
 		},
 		{
 			"login": "ricardoledo",
-			"avatar": "api/v1/usuario/avatar/ricardoledo.jpg",
-			"status": 0
+			"avatar": "api/v1/usuario/avatar/ricardoledo.jpg"
+		},
+		{
+			"login": "anclara",
+			"avatar": "api/v1/usuario/avatar/anaclara.jpg"
+		},
+		{
+			"login": "kassiaoi",
+			"avatar": "api/v1/usuario/avatar/kassiaoli.jpg"
+		},
+		{
+			"login": "nickolasaniel",
+			"avatar": "api/v1/usuario/avatar/nickolasdaniel.jpg"
+		},
+		{
+			"login": "ricardledo",
+			"avatar": "api/v1/usuario/avatar/ricardoledo.jpg"
 		}
 	]
 }

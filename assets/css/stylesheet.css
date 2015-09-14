@@ -1,20 +1,108 @@
-body {
+html, body {
 	margin: 0px;
+	margin-top: 1%;
 	padding: 0px;
+	height: 100%;
+	overflow: hidden;
 }
 
-a.contato {
-	background: black;
+.container {
+	height: 100%;
 }
 
-a.contato {
+.content {
+	height: calc(100% - 32px);
+}
+
+.col-left, .col-right {
+	height: 100%;
+}
+
+.col-left .form-procurar {
+	height: 6%;
+}
+
+.col-left .contatos {
+	height: 94%;
+}
+
+.col-left .contatos .lista-de-contatos {
+	height: 94%;
+	overflow-y: scroll;
+}
+
+.col-left .contatos ul.lista-de-contatos a.contato {
 	text-decoration: none;
 }
 
-.contatos .lista-de-contatos .contato img {
-	width: 64px;	
+.col-left .contatos ul.lista-de-contatos a.contato img {
+	width: 64px;
 }
 
-.chat img {
+.col-right .perfil-destinatario {
+	height: 20%;
+}
+
+.col-right .chat {
+	height: 80%;
+}
+
+.col-right .chat .mensagens {
+	height: 80%;
+	padding: 2%;
+}
+
+.col-right .perfil-destinatario img {
 	width: 128px;
+}
+
+.col-right .chat .mensagens {
+	height: 80%;
+	overflow-y: scroll;
+}
+
+.mensagens {
+	font-size: 1.4em;
+}
+
+.mensagens .mensagem {
+	display: block;
+}
+
+.mensagens .mensagem-enviada {
+	text-align: right;
+}
+
+.mensagens .mensagem-recebida {
+	text-align: left;
+}
+
+.mensagens .mensagem p {
+	display: inline-block;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	padding: 0.5%;
+}
+
+#mensagem {
+	resize: none;
+}
+
+#btn-enviar {
+	cursor: pointer;
+}
+
+@media ( max-width : 768px) {
+	html, body {
+		margin-top: 0px;
+	}
+	
+	.content {
+		height: 100%;
+	}
+	
+	.col-right .perfil-destinatario img {
+		width: 64px;
+	}
 }
