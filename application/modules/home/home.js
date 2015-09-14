@@ -109,7 +109,7 @@ angular.module("chat.home", []).config(
 		});
 	}
 
-	$scope.conn = io.connect("http://192.168.0.103:3000");
+	$scope.conn = io.connect("http://192.168.25.104:3000");
 	$scope.conn.on("connect", function() {
 		$scope.conn.on("mensagem-presenca", function(mensagemPresenca) {
 			recebePresenca(mensagemPresenca);

@@ -2,6 +2,11 @@
 
 angular.module("chat.login", [])
 .controller("LoginController", ["$scope", "$http", "$cookies", "$location", function($scope, $http, $cookies, $location) {
+	// Verifica se o usuário está logado
+	if ($cookies.get("access_token") !== undefined) {
+		$location.path("/");
+	}
+	
 	$scope.entrar = function(login, senha) {
 		$http.get("api/v1/usuario.json").then(function(response) {
 			var usuarios = response.data.usuarios;
