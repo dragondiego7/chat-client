@@ -165,5 +165,9 @@ angular.module("chat.home", []).config(
 
 		objMensagem.val("");
 		objMensagem.focus();
+		
+		var mensagens = $('#mensagens');
+		
+		mensagens.animate({'scrollTop': mensagens.prop('scrollHeight')}, 100);
 	}
-} ]);
+}]);
