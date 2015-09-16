@@ -1,25 +1,47 @@
 "use strict";
 
 angular.module("chat.login", [])
-.controller("LoginController", ["$scope", "$http", "$cookies", "$location", function($scope, $http, $cookies, $location) {
+.controller("LoginController", ["$scope", "$http", "$cookies", "$location", "config", function($scope, $http, $cookies, $location, config) {
+		
 	// Verifica se o usuário está logado
 	if ($cookies.get("access_token") !== undefined) {
 		$location.path("/");
 	}
 	
-	$scope.entrar = function(login, senha) {
-		$http.get("api/v1/usuario.json").then(function(response) {
-			var usuarios = response.data.usuarios;
+	$scope.entrar = function(usuarioLogin) {
+		var request = {
+				"grant_type": "password",
+				"login": usuarioLogin.login,
+				"senha": usuarioLogin.senha,
+				"client_id": config.API.credenciais.client_id,
+				"client_secret": config.API.credenciais.client_secret
+		}
+		
+		$http.post(config.API.url + '/autenticacao', request).then(function(response) {
+			if(response.data.access_token !== undefined) {
+				$cookies.put("access_token", response.data.access_token);
+				$cookies.put("refresh_token", response.data.refresh_token);
+				
+				usuarioLogin.id = response.data.user_id;
+				
+				$cookies.putObject("usuario", usuarioLogin);
+				$location.path("/");
+			}
 			
-			usuarios.forEach(function(usuario) {
-				if(usuario.login == login) {
-					$cookies.putObject("usuario", usuario);
-					$cookies.put("access_token", "xablablau1");
-					$location.path("/");
-				}
-			});
-			
-			$scope.msgErro = "Login/senha inválido";
+			$scope.loginErrorMsg = "Login/senha inválido";
+		});
+	}
+	
+	$scope.cadastrar = function(usuario) {
+		var copiaDeUsuario = angular.copy(usuario);
+		delete copiaDeUsuario.confirmaSenha;
+		
+		$http.post(config.API.url + '/usuario', copiaDeUsuario).then(function(response) {
+			if(response.data.success) {
+				$scope.entrar(usuario);
+			} else {
+				$scope.cadastrarErrorMsg = response.data.mensagem;
+			}
 		});
 	}
 }])
@@ -29,12 +51,12 @@ function($routeProvider, $httpProvider) {
 		controller: "LoginController",
 		templateUrl: "application/modules/login/partials/login.tpl.html"
 	});
-	
+		
 	// Adiciona uma função ao interceptador de requisições para verificar se o usuário está lgado
 	$httpProvider.interceptors.push(["$q", "$location", "$cookies",
 	function($q, $location, $cookies) {
 		return {
-			'request' : function(config) {
+			'request' : function(config) {				
 				// Verifica se o usuário está logado
 				if ($cookies.get("access_token") === undefined) {
 					$location.path("/login");

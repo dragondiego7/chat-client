@@ -7,26 +7,135 @@ angular.module("chat.home", []).config(
 		templateUrl : "application/modules/home/partials/home.tpl.html"
 	});
 } ])
-.factory("chatService", function() {
-	return {
-		
+.factory("chatService", ["$http", "config", function($http, config) {
+	
+	// Inicializa variável que irá conter a conexão com o serv websocket
+	var _this = this;
+	var conn = null;
+	var usuario = null;
+	var contatos = null;
+	
+	var Contato = function(login) {
+		this.login = login;
+		this.status = 0;
+		this.historico = [];
+		this.msgsNaoLidas = 0;
 	}
-})
-.directive('myKeypressEnter', function () {
-    return function (scope, element, attrs) {
-        element.bind("keydown keypress", function (event) {
-            if(event.which === 13) {
-                scope.$apply(function (){
-                    scope.$eval(attrs.myKeypressEnter);
-                });
+		
+	/*
+	 * Busca um contato do usuário
+	 */
+	var buscaContato = function(login, callback) {
+		for ( var i in contatos) {
+			if (contatos[i].login === login) {
+				if (callback !== undefined)
+					callback(contatos[i]);
+			}
+		}
+	}
 
-                event.preventDefault();
-            }
-        });
-    };
-})
+	/*
+	 * Emite sinal de presença a outros usuários
+	 */
+	var emitePresenca = function() {
+		var presenca = {
+			tipo : "mensagem-presenca",
+			corpo : {
+				"login" : _this.usuario.login,
+				"status" : 1
+			}
+		}
+
+		conn.emit("send-server", presenca);
+	}
+
+	/*
+	 * Trata sinais de presença recebidos
+	 */
+	var _recebePresenca = undefined;
+	var recebePresenca = function(mensagemPresenca) {
+		buscaContato(mensagemPresenca.corpo.login, function(contato) {
+			contato.status = mensagemPresenca.corpo.status;
+			
+			if(_recebePresenca !== undefined)
+				_recebePresenca(mensagemPresenca);
+		});
+	}
+	
+	/*
+	 * Trata o recebimento de mensagens
+	 */
+	var _recebeMensagem = undefined;
+	var recebeMensagem = function(mensagemChat) {
+		buscaContato(mensagemChat.corpo.de, function(contato) {
+			if ($scope.destinatario !== undefined && $scope.destinatario.login !== mensagemChat.corpo.de) {
+				contato.msgsNaoLidas++;
+			}
+
+			mensagemChat.tipo = "mensagem-recebida";
+			contato.historico.push(mensagemChat);
+			
+			if(_recebeMensagem !== undefined)
+				_recebeMensagem(mensagemChat);
+		});
+	}
+	
+
+	
+	return {
+		on: function(arg, callback) {
+			switch(arg0) {
+			case 'recebe-presenca':
+				_recebePresenca = callback;
+				break;
+			case 'recebe-mensagem':
+				_recebeMensagem = callback;
+				break;
+			}
+		},
+		inicia: function(usuario) {
+			_this.usuario = usuario;
+			conn = io.connect("http://env-5323080.jelasticlw.com.br:8080");
+			conn.on("connect", function() {
+				conn.on("mensagem-presenca", function(mensagemPresenca) {
+					recebePresenca(mensagemPresenca);
+				});
+
+				conn.on("mensagem-chat", function(mensagemChat) {
+					recebeMensagem(mensagemChat);
+				});
+
+				emitePresenca();
+			});
+			
+		},
+		obtemContatos: function(id, callback) {
+			$http.get(config.API.url + "/amizade/" + id).then(function(response) {
+				var contatos = [];
+				response.data.amizades.forEach(function(usuario) {
+					var contato = new Contato(usuario.login);
+					contato.avatar = usuario.avatar;
+					contatos.push(contato);
+					_this.contatos = contatos;
+				});
+				
+				callback(contatos);
+			});
+		},
+		enviaMensagem: function(destinatario, mensagem) {
+			var objMensagem = {
+					tipo: 'mensagem-chat',
+					corpo: {
+						de: '',
+						para: destinatario,
+						
+					}
+			}
+		}
+	}
+}])
 .controller("HomeController",
-[ "$scope", "$http", "$cookies", function($scope, $http, $cookies) {
+[ "$scope", "$http", "$cookies", "config", function($scope, $http, $cookies, config) {
 
 	var _this = this;
 
@@ -49,8 +158,8 @@ angular.module("chat.home", []).config(
 	/*
 	 * Carrega contatos do usuário
 	 */
-	$http.get('api/v1/usuario.json').then(function(response) {
-		response.data.usuarios.forEach(function(usuario) {
+	$http.get(config.API.url + "/amizade/" + $scope.usuario.id).then(function(response) {
+		response.data.amizades.forEach(function(usuario) {
 			var contato = new Contato(usuario.login);
 			contato.avatar = usuario.avatar;
 			$scope.contatos.push(contato);

@@ -1,4 +1,4 @@
-<div class="row content">
+<div class="row home content">
 	<div class="col-left col-xs-12 col-sm-4 col-md-3">
 		<div class="row form-procurar">
 			<form class="form">
@@ -60,7 +60,7 @@
 						<textarea class="form-control" id="mensagem" name="mensagem" ng-model="mensagem" required="required" ng-minlength="1" ng-trim="true"
 							rows="2" my-keypress-enter="formChat.$valid && enviaMensagem(destinatario)"></textarea>
 						<div class="input-group-addon" id="btn-enviar"
-							ng-click="formChat.$valid && formChat">Enviar</div>
+							ng-click="formChat.$valid && enviaMensagem(destinatario)">Enviar</div>
 					</div>
 				</div>
 			</form>

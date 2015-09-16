@@ -14,7 +14,7 @@ html, body {
 	height: calc(100% - 32px);
 }
 
-.col-left, .col-right {
+.home .col-left, .home .col-right {
 	height: 100%;
 }
 
@@ -93,15 +93,21 @@ html, body {
 	cursor: pointer;
 }
 
+.pg-login input {
+	margin-bottom: 1%;
+}
+
+.pg-login .login {
+	margin-bottom: 10%;	
+}
+
 @media ( max-width : 768px) {
 	html, body {
 		margin-top: 0px;
 	}
-	
 	.content {
 		height: 100%;
 	}
-	
 	.col-right .perfil-destinatario img {
 		width: 64px;
 	}
