@@ -7,7 +7,7 @@ angular.module("chat",
 				"url": "http://env-8453410.jelasticlw.com.br/api/v1",
 				"credenciais": {
 					"client_id": "clienteweb",
-					"client_secret": "gf155c44"
+					"client_secret": "afat55"
 				}
 			}
 		})

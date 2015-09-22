@@ -38,6 +38,7 @@ angular.module("chat.login", [])
 		
 		$http.post(config.API.url + '/usuario', copiaDeUsuario).then(function(response) {
 			if(response.data.success) {
+				console.log(usuario);
 				$scope.entrar(usuario);
 			} else {
 				$scope.cadastrarErrorMsg = response.data.mensagem;

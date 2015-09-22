@@ -95,7 +95,7 @@ angular.module("chat.home", []).config(
 		},
 		inicia: function(usuario) {
 			_this.usuario = usuario;
-			conn = io.connect("http://env-5323080.jelasticlw.com.br:8080");
+			conn = io.connect("http://env-5323080.jelasticlw.com.br:3000");
 			conn.on("connect", function() {
 				conn.on("mensagem-presenca", function(mensagemPresenca) {
 					recebePresenca(mensagemPresenca);
