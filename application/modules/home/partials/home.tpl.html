@@ -57,8 +57,10 @@
 			<form name="formChat" ng-submit="enviaMensagem(destinatario)">
 				<div class="form-group col-xs-12 offset-0">
 					<div class="input-group">
-						<textarea class="form-control" id="mensagem" name="mensagem" ng-model="mensagem" required="required" ng-minlength="1" ng-trim="true"
-							rows="2" my-keypress-enter="formChat.$valid && enviaMensagem(destinatario)"></textarea>
+						<textarea class="form-control" id="mensagem" name="mensagem"
+							ng-model="mensagem" required="required" ng-minlength="1"
+							ng-trim="true" rows="2"
+							my-keypress-enter="formChat.$valid && enviaMensagem(destinatario)"></textarea>
 						<div class="input-group-addon" id="btn-enviar"
 							ng-click="formChat.$valid && enviaMensagem(destinatario)">Enviar</div>
 					</div>

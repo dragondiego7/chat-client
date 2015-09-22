@@ -2,7 +2,7 @@
 	<div class="col col-left hidden-xs col-md-7 col-sm-8 col-lg-6"></div>
 	<div
 		class="col col-right col-xs-10 col-xs-offset-1 col-md-4 col-sm-4 col-lg-3">
-		<div class="login centered">
+		<div class="login centered" ng-init="exibeLogin = 1">
 			<form name="formLogin">
 				<fieldset>
 					<legend>Login</legend>
@@ -23,6 +23,7 @@
 					</div>
 				</fieldset>
 			</form>
+			<a id="lnk-tela-cadastro" href="javascript:void(0)" class="hidden-md hidden-sm hidden-lg">Ainda não possui conta? clique aqui!</a>
 		</div>
 		<div class="cadastrar-se hidden-xs">
 			<form name="formCadastrar"
@@ -72,10 +73,19 @@
 							ng-show="(formCadastrar.$submitted || formCadastrar.confirmaSenha.$touched) && formCadastrar.confirmaSenha.$valid"></span>
 					</div>
 					<div class="form-group">
-						<button type="submit" id="btn-entrar" class="btn btn-primary">Cadastrar-se</button>
+						<button type="submit" id="btn-cadastrar" class="btn btn-primary">Cadastrar-se</button>
 					</div>
 				</fieldset>
 			</form>
+			<a id="lnk-tela-login" href="javascript:void(0)" class="hidden-md hidden-sm hidden-lg" ng-click="">Já possui conta? clique aqui!</a>
 		</div>
 	</div>
 </div>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#lnk-tela-cadastro, #lnk-tela-login").click(function() {
+			$("div.login").toggleClass("hidden-xs");
+			$("div.cadastrar-se").toggleClass("hidden-xs");
+		});
+	});
+</script>
