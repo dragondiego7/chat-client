@@ -4,7 +4,7 @@ angular.module("chat",
 		[ "ngRoute", "ngCookies", "ngTouch", "chat.login", "chat.home" ])
 		.constant("config", {
 			"API": {
-				"url": "http://env-8453410.jelasticlw.com.br/api/v1",
+				"url": "http://localhost:8081/api/v1",
 				"credenciais": {
 					"client_id": "clienteweb",
 					"client_secret": "afat55"

@@ -48,7 +48,7 @@
 		</div>
 		<div class="row chat">
 			<div id="mensagens" class="form-group col-sm-12 offset-0 mensagens">
-				<div class="mensagem {{mensagem.tipo}}"
+				<div class="col-xs-6 mensagem {{mensagem.tipo}}"
 					ng-repeat="mensagem in destinatario.historico">
 					<p
 						ng-class="{'bg-success': mensagem.tipo == 'mensagem-recebida', 'bg-info': mensagem.tipo == 'mensagem-enviada'}">{{mensagem.corpo.mensagem}}</p>
