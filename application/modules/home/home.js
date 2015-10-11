@@ -131,6 +131,11 @@ angular.module("chat.home", []).config(
 						
 					}
 			}
+		},
+		buscaContato: function(contato, callback) {
+			$http.get(config.API.url + "usuario/" + contato).then(function(response) {
+				
+			});
 		}
 	}
 }])
@@ -150,6 +155,8 @@ angular.module("chat.home", []).config(
 	$scope.usuario = $cookies.getObject("usuario");
 
 	// Inicializa lista de contatos
+	$scope.solicitacoesAmizade = [];
+	$scope.resultadoPesquisa = [];
 	$scope.contatos = [];
 
 	// Inicializa destinatário
@@ -158,14 +165,33 @@ angular.module("chat.home", []).config(
 	/*
 	 * Carrega contatos do usuário
 	 */
-	$http.get(config.API.url + "/amizade/" + $scope.usuario.id).then(function(response) {
-		response.data.amizades.forEach(function(usuario) {
-			var contato = new Contato(usuario.login);
-			contato.avatar = usuario.avatar;
-			$scope.contatos.push(contato);
+	$scope.carregaContatos = function() {
+		$http.get(config.API.url + "/amizade/" + $scope.usuario.id).then(function(response) {
+			response.data.amizades.forEach(function(usuario) {
+				var contato = new Contato(usuario.login);
+				contato.avatar = usuario.avatar;
+				$scope.contatos.push(contato);
+			});
 		});
-	});
-
+	}
+	
+	$scope.carregaSolicitacoesAmizade = function() {
+		$http.get(config.API.url + "/amizade/solicitacao/" + $scope.usuario.id).then(function(response) {
+			response.data.solicitacoes.forEach(function(solicitacao) {
+				var usuario = solicitacao.usuario;
+				var contato = new Contato(usuario.login);
+				contato.avatar = 'assets/img/anonimo.jpg';
+				contato.solicitacaoPendente = solicitacao;
+				$scope.solicitacoesAmizade.push(contato);
+			});
+		});
+	}
+	
+	$scope.recarrega = function() {
+		$scope.carregaSolicitacoesAmizade();
+		$scope.carregaContatos();
+	}
+	
 	/*
 	 * Busca um contato do usuário
 	 */
@@ -227,6 +253,10 @@ angular.module("chat.home", []).config(
 		$scope.conn.on("mensagem-chat", function(mensagemChat) {
 			recebeMensagem(mensagemChat);
 		});
+		
+		$scope.conn.on("mensagem-solicitacao-amizade", function() {
+			$scope.recarrega();
+		});
 
 		emitePresenca();
 	});
@@ -279,4 +309,89 @@ angular.module("chat.home", []).config(
 		
 		mensagens.animate({'scrollTop': mensagens.prop('scrollHeight')}, 100);
 	}
+	
+	$scope.procuraContato = function(contato) {
+		// TODO: organizar o recebimento do parâmetro
+		var contato = $scope.contatoProcurado;
+		$scope.resultadoPesquisa = [];
+		
+		$('.carregandoProcurar').show();
+		$http.get(config.API.url + "/amizade/busca/" + this.usuario.id + "/"  + contato).then(function(response) {
+			response.data.usuarios.forEach(function(usuario) {
+				var contato = new Contato(usuario.login);
+				contato.id = usuario.id;
+				contato.status = -1;
+				contato.avatar = 'assets/img/anonimo.jpg';
+				contato.solicitacaoPendente = usuario.solicitacaoPendente;
+				$scope.resultadoPesquisa.push(contato);
+			});
+			
+			$('.carregandoProcurar').hide();
+		});
+	}
+	
+	$scope.adicionaContato = function(contato) {
+		var request = {
+			'solicitanteId': this.usuario.id,
+			'solicitadoId': contato.id
+		}
+		
+		$http.post(config.API.url + "/amizade/solicitacao", request).then(function(response) {
+			var carregando = $('.carregandoAdicionar[data-contato-id="' + contato.id + '"]');
+			var btnAdicionar = $('.btn-adicionar[data-contato-id="' + contato.id + '"]');
+			
+			btnAdicionar.hide();
+			carregando.show();
+			btnAdicionar.html('solicitação enviada');
+			carregando.hide();
+			btnAdicionar.show();
+			
+			var contaPisca = 0;
+			var interval = setInterval(function() {
+				btnAdicionar.fadeOut(500, function() {
+					btnAdicionar.fadeIn(500, function() {
+						contaPisca++;
+						
+						if(contaPisca == 10) {
+							clearInterval(interval);
+							$scope.procuraContato($scope.contatoProcurado);
+						}
+					});
+				});
+			}, 100);
+		});
+	}
+	
+	$scope.limpaBusca = function() {
+		$scope.resultadoPesquisa = [];
+		$scope.contatoProcurado = '';
+	}
+	
+	$scope.respondeSolicitacaoAmizade = function(contato, situacao) {
+		var request = {
+			'situacao': situacao	
+		};
+		
+		$http.put(config.API.url + "/amizade/solicitacao/" + contato.solicitacaoPendente.id, request).then(function(response) {
+			$scope.recarrega();
+		});
+	}
+	
+	$scope.aceitaSolicitacaoAmizade = function(contato) {
+		$scope.respondeSolicitacaoAmizade(contato, 'A');
+	}
+	
+	$scope.recusaSolicitacaoAmizade = function(contato) {
+		$scope.respondeSolicitacaoAmizade(contato, 'R');
+	}
+	
+	$scope.cancelaSolicitacaoAmizade = function(contato) {
+		$scope.respondeSolicitacaoAmizade(contato, 'C');
+	}
+	
+	$scope.fechaSolicitacaoAmizade = function(contato) {
+		
+	}
+
+	$scope.recarrega();
 }]);

@@ -2,21 +2,71 @@
 	<div class="col-left col-xs-12 col-sm-4 col-md-3">
 		<div class="row form-procurar">
 			<form class="form">
-				<div class="form-group">
-					<input type="text" ng-model="procurar" class="form-control"
-						placeholder="Procurar..."> <span
-						class="glyphicon glyphicon glyphicon-search form-control-feedback"
-						aria-hidden="true"></span>
+				<div class="form-group col-sm-10 procurar">
+					<input type="text" ng-model="contatoProcurado" class="form-control"
+						placeholder="Procurar..."> <i
+						ng-show="contatoProcurado.length > 0"
+						class="limpa-procurar glyphicon glyphicon-remove form-control-feedback"
+						ng-click="limpaBusca()"></i>
+				</div>
+				<div class="form-group col-sm-2">
+					<button type="button" class="btn btn-info"
+						ng-click="contatoProcurado.length > 0 && procuraContato('{{contatoProcurado}}')">
+						<span class="glyphicon glyphicon-search"></span>
+					</button>
 				</div>
 			</form>
 		</div>
 		<div class="row contatos">
+			<div class="carregandoProcurar" style="display: none">
+				<img src="assets/img/carregando.gif" class="img-carregando">
+			</div>
 			<ul class="list-group lista-de-contatos">
-				<li class="list-group-item"
-					ng-repeat="contato in contatos | filter: procurar | orderBy: '-status'"
+				<li class="list-group-item solicitacao-amziade"
+					ng-repeat="contato in solicitacoesAmizade"
+					data-contato-id="{{ contato.id }}">
+					<div class="media">
+						<div class="media-left">
+							<img class="media-object img-responsive img-thumbnail"
+								src="assets/img/anonimo.jpg" alt="teste">
+						</div>
+						<div class="media-body">
+							<h4 class="media-heading">{{ contato.login }}</h4>
+							<p>solicitou amizade</p>
+							<span class="label label-info btn-aceitar-amizade"
+								ng-click="aceitaSolicitacaoAmizade(contato)"
+								data-solicitacao-id="{{contato.id}}">aceitar</span> <span
+								class="label label-danger btn-recusar-amizade"
+								ng-click="recusaSolicitacaoAmizade(contato)"
+								data-solicitacao-id="{{contato.id}}">recusar</span>
+						</div>
+					</div>
+				</li>
+				<li class="list-group-item resultado-pesquisa"
+					ng-repeat="contato in resultadoPesquisa"
+					data-contato-id="{{ contato.id }}">
+					<div class="media">
+						<div class="media-left">
+							<img class="media-object img-responsive img-thumbnail"
+								src="{{ contato.avatar }}" alt="{{ contato.login }}">
+						</div>
+						<div class="media-body">
+							<h4 class="media-heading">{{ contato.login }}</h4>
+							<span ng-show="{{contato.solicitacaoPendente == null}}" class="label label-info btn-adicionar"
+								ng-click="adicionaContato(contato)"
+								data-contato-id="{{ contato.id }}">+ adicionar</span>
+							<span ng-show="{{contato.solicitacaoPendente != null}}" class="label label-danger btn-cancelar-solicitacao"
+								ng-click="cancelaSolicitacaoAmizade(contato)"
+								data-contato-id="{{ contato.id }}">- cancelar solicitacao</span>
+						</div>
+					</div>
+				</li>
+				<li class="list-group-item contato"
+					ng-repeat="contato in contatos | filter: contatoProcurado | orderBy: '-status'"
+					data-contato-id="{{ contato.id }}"
 					data-contato-login="{{ contato.login }}"><a
 					href="javascript:void(0)" class="contato"
-					ng-click="iniciaConversa('{{contato.login}}')">
+					ng-click="contato.status != -1 && iniciaConversa('{{contato.login}}')">
 						<div class="media">
 							<div class="media-left">
 								<img class="media-object img-responsive img-thumbnail"

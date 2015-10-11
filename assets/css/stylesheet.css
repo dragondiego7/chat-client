@@ -98,7 +98,38 @@ html, body {
 }
 
 .pg-login .login {
-	margin-bottom: 10%;	
+	margin-bottom: 10%;
+}
+
+.procurar {
+	padding: 0px;
+}
+
+.carregandoProcurar {
+	margin-top: 10%;
+	height: 100%;
+	text-align: center;
+}
+
+.carregandoProcurar .img-carregando {
+	height: 15%;
+	z-index: 1000;
+}
+
+.limpa-procurar {
+	cursor: pointer;
+}
+
+.procurar .form-control-feedback {
+	pointer-events: auto;
+}
+
+.procurar .form-control-feedback:hover {
+	cursor: pointer;
+}
+
+.btn-adicionar:hover, .btn-cancelar-solicitacao, .btn-aceitar-amizade, .btn-recusar-amizade {
+	cursor: pointer
 }
 
 @media ( max-width : 768px) {
