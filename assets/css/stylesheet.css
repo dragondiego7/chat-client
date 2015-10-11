@@ -132,6 +132,10 @@ html, body {
 	cursor: pointer
 }
 
+button.close {
+	margin-top: -30%;
+}
+
 @media ( max-width : 768px) {
 	html, body {
 		margin-top: 0px;
