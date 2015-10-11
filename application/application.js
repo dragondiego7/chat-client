@@ -4,11 +4,14 @@ angular.module("chat",
 		[ "ngRoute", "ngCookies", "ngTouch", "chat.login", "chat.home" ])
 		.constant("config", {
 			"API": {
-				"url": "http://localhost:8081/api/v1",
+				"url": "http://api.chat.com.br/api/v1",
 				"credenciais": {
 					"client_id": "clienteweb",
-					"client_secret": "afat55"
+					"client_secret": "gf155c44"
 				}
+			},
+			"SERVER": {
+				"addr": "http://chat.com.br:3000"
 			}
 		})
 		.directive('myKeypressEnter', function() {

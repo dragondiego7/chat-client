@@ -29,6 +29,8 @@ angular.module("chat.login", [])
 			}
 			
 			$scope.loginErrorMsg = "Login/senha inválido";
+		}, function() {
+			$scope.loginErrorMsg = "Serviço temporáriamente indisponível";
 		});
 	}
 	
@@ -43,6 +45,8 @@ angular.module("chat.login", [])
 			} else {
 				$scope.cadastrarErrorMsg = response.data.mensagem;
 			}
+		}, function() {
+			$scope.cadastrarErrorMsg = "Serviço temporáriamente indisponível";
 		});
 	}
 }])
