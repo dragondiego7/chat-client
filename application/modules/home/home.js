@@ -71,15 +71,15 @@ angular.module("chat.home", []).config(
 	 * Trata o recebimento de mensagens
 	 */
 	var recebeMensagem = function(mensagemChat) {
-		buscaContato(mensagemChat.corpo.de, function(contato) {
-			if ($scope.destinatario !== undefined && $scope.destinatario.login !== mensagemChat.corpo.de) {
-				contato.msgsNaoLidas++;
+		$scope.contatos.forEach(function(contato, chave) {
+			if(contato.login == mensagemChat.corpo.de) {
+				$scope.contatos[chave].msgsNaoLidas++;
+				mensagemChat.tipo = "mensagem-recebida";
+				$scope.contatos[chave].historico.push(mensagemChat);
 			}
-
-			mensagemChat.tipo = "mensagem-recebida";
-			contato.historico.push(mensagemChat);
-			$scope.$apply();
 		});
+		
+		$scope.$apply();
 	}
 	
 	$scope.exibeContatos = function() {
