@@ -41,8 +41,9 @@
 								data-solicitacao-id="{{contato.id}}">recusar</span>
 						</div>
 					</div>
-					<button type="button" class="close" data-dismiss="solicitacao-amizade"
-						aria-label="Close" ng-click="fechaSolicitacaoAmizade(contato)">
+					<button type="button" class="close"
+						data-dismiss="solicitacao-amizade" aria-label="Close"
+						ng-click="fechaSolicitacaoAmizade(contato)">
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</li>
@@ -136,3 +137,26 @@
 		</div>
 	</div>
 </div>
+<div class="modal fade" role="dialog" id="modal-msg-erro"
+	aria-labelledby="gridSystemModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="gridSystemModalLabel">Erro ao conectar-se com o servidor</h4>
+			</div>
+			<div class="modal-body">
+				Que pena =/ não foi possível se conectar. Tente novamente mais tarde!
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="logout()">OK</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->

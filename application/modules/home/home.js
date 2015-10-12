@@ -8,7 +8,7 @@ angular.module("chat.home", []).config(
 	});
 } ])
 .controller("HomeController",
-[ "$scope", "$http", "$cookies", "config", function($scope, $http, $cookies, config) {
+[ "$scope", "$http", "$location", "$cookies", "config", function($scope, $http, $location, $cookies, config) {
 
 	var _this = this;
 
@@ -28,29 +28,7 @@ angular.module("chat.home", []).config(
 	$scope.contatos = [];
 
 	// Inicializa destinatário
-	$scope.destinatario = undefined;
-
-	/*
-	 * Carrega contatos do usuário
-	 */
-	$http.get(config.API.url + "/amizade/" + $scope.usuario.id).then(function(response) {
-		response.data.amizades.forEach(function(usuario) {
-			var contato = new Contato(usuario.login);
-			contato.avatar = usuario.avatar;
-			$scope.contatos.push(contato);
-		});
-	});
-
-	$http.get(config.API.url + "/amizade/solicitacao/" + $scope.usuario.id).then(function(response) {
-		response.data.solicitacoes.forEach(function(solicitacao) {
-			var usuario = solicitacao.usuario;
-			var contato = new Contato(usuario.login);
-			contato.avatar = 'assets/img/anonimo.jpg';
-			contato.solicitacaoPendente = solicitacao;
-			$scope.solicitacoesAmizade.push(contato);
-		});
-	});
-	
+	$scope.destinatario = undefined;	
 	
 	/*
 	 * Busca um contato do usuário
@@ -173,21 +151,41 @@ angular.module("chat.home", []).config(
 		});
 	}
 	
-	$scope.adicionaContato = function(contato) {
+	$scope.adicionaContato = function(contato) {	
 		var request = {
 			'solicitanteId': this.usuario.id,
 			'solicitadoId': contato.id
 		}
 		
-		var mensagem = {
-			'tipo': 'mensagem-solicitacao-amizade',
-			'corpo': {
-				'solicitanteId': this.usuario.id,
-				'solicitadoId': contato.id
-			}
-		}
+		$http.post(config.API.url + "/amizade/solicitacao", request).then(function(response) {
+			var contaPisca = 0;
+			var btnAdicionar = $('.btn-adicionar[data-contato-id="' + contato.id + '"]');
+			btnAdicionar.html("solicitação enviada...");
+			
+			var interval = setInterval(function() {
+				btnAdicionar.fadeOut(500, function() {
+					btnAdicionar.fadeIn(500);
+				});
+				
+				contaPisca++;
+				if(contaPisca == 6) {
+					clearInterval(interval);	
+					$scope.resultadoPesquisa.forEach(function(c, chave) {
+						if(c.id == contato.id) {
+							var atualizaContato = new Contato(contato.login);
+							atualizaContato.id = contato.id;
+							atualizaContato.avatar = contato.avatar;
+							atualizaContato.solicitacaoPendente = response.data.solicitacao;
+							$scope.resultadoPesquisa[chave] = atualizaContato;
+							$scope.$digest();
+							btnAdicionar.html('adicionar');
+						}
+					});
+				}
+			}, 500);
+			
+		});
 		
-		$scope.conn.emit('mensagem-solicitacao-amizade', $mensagem);
 	}
 	
 	$scope.limpaBusca = function() {
@@ -195,44 +193,135 @@ angular.module("chat.home", []).config(
 		$scope.contatoProcurado = '';
 	}
 	
-	$scope.respondeSolicitacaoAmizade = function(contato, situacao) {
-		var mensagem = {
-			'tipo': 'mensagem-solicitacao-amizade-resposta',
-			'corpo': {
-				'solicitacaoId': contato.solicitacaoPendente.id,
-				'situacao': situacao
-			}
+	$scope.respondeSolicitacaoAmizade = function(contato, situacao, callback) {
+		var request = {
+			'situacao': situacao
 		};
 		
-		$scope.conn.emit('mensagem-solicitacao-amizade-resposta', mensagem);
+		$http.put(config.API.url + "/amizade/solicitacao/" + contato.solicitacaoPendente.id, request).then(function(response) {
+			callback();	
+		});
 	}
 	
 	$scope.aceitaSolicitacaoAmizade = function(contato) {
-		$scope.respondeSolicitacaoAmizade(contato, 'A');
+		$scope.respondeSolicitacaoAmizade(contato, 'A', function() {
+			$scope.contatos.push(contato);
+			$scope.solicitacoesAmizade.forEach(function(c, chave) {
+				if(contato.id == c.id) {
+					$scope.solicitacoesAmizade.splice(chave, 1);
+				}
+			});
+		});
 	}
 	
 	$scope.recusaSolicitacaoAmizade = function(contato) {
-		$scope.respondeSolicitacaoAmizade(contato, 'R');
+		$scope.respondeSolicitacaoAmizade(contato, 'R', function() {
+			$scope.solicitacoesAmizade.forEach(function(c, chave) {
+				if(contato.id == c.id) {
+					$scope.solicitacoesAmizade.splice(chave, 1);
+				}
+			});
+		});
+	}
+	
+	$scope.cancelaSolicitacaoAmizade = function(contato) {
+		$scope.respondeSolicitacaoAmizade(contato, 'C', function() {
+			$scope.resultadoPesquisa.forEach(function(c, chave) {
+				if(c.id == contato.id) {
+					var atualizaContato = new Contato(contato.login);
+					atualizaContato.id = contato.id;
+					atualizaContato.avatar = contato.avatar;
+					atualizaContato.solicitacaoPendente = null;
+					$scope.resultadoPesquisa[chave] = atualizaContato;
+					$scope.$digest();
+				}
+			});
+		});
 	}
 	
 	$scope.fechaSolicitacaoAmizade = function(contato) {
 		contato.ignora = 1;
 	}
-	
-	$scope.conn = io.connect(config.SERVER.addr);
-	$scope.conn.on("connect", function() {
-		$scope.conn.on("mensagem-presenca", function(mensagemPresenca) {
-			recebePresenca(mensagemPresenca);
-		});
 
-		$scope.conn.on("mensagem-chat", function(mensagemChat) {
-			recebeMensagem(mensagemChat);
+	var carregaContatos = function(callback) {
+		$http.get(config.API.url + "/amizade/" + $scope.usuario.id).then(function(response) {
+			response.data.amizades.forEach(function(usuario) {
+				var contato = new Contato(usuario.login);
+				contato.avatar = usuario.avatar;
+				$scope.contatos.push(contato);
+			});
+			
+			callback();
+		});
+	}
+	
+	var carregaSolicitacoesAmizade = function() {
+		$scope.solicitacoesAmizade = [];
+		$http.get(config.API.url + "/amizade/solicitacao/" + $scope.usuario.id).then(function(response) {
+			response.data.solicitacoes.forEach(function(solicitacao) {
+				var usuario = solicitacao.usuario;
+				var contato = new Contato(usuario.login);
+				contato.id = usuario.id;
+				contato.avatar = 'assets/img/anonimo.jpg';
+				contato.solicitacaoPendente = solicitacao;
+				$scope.solicitacoesAmizade.push(contato);
+			});
+		});
+	}
+	
+	var conectaWebSocket = function() {
+		$scope.conn = io.connect(config.SERVER.addr);
+		
+		var exibeMensagemErro = function() {
+			$('#modal-msg-erro').modal();
+		}
+		
+		$scope.conn.on("connect_timeout", function() {
+			exibeMensagemErro();
 		});
 		
-		$scope.conn.on("mensagem-solicitacao-amizade", function() {
-			$scope.recarrega();
+		$scope.conn.on("connect_error", function() {
+			exibeMensagemErro();
+		})
+		
+		$scope.conn.on("connect", function() {
+			$scope.conn.on("mensagem-presenca", function(mensagemPresenca) {
+				recebePresenca(mensagemPresenca);
+			});
+	
+			$scope.conn.on("mensagem-chat", function(mensagemChat) {
+				recebeMensagem(mensagemChat);
+			});
+			
+			$scope.conn.on("mensagem-solicitacao-amizade", function() {
+			});
+	
+			emitePresenca();
 		});
-
-		emitePresenca();
-	});
+	}
+	
+	$scope.logout = function() {
+		$cookies.remove('access_token');
+		$cookies.remove('refresh_token');
+		$cookies.remove('usuario');
+		location.reload();
+	}
+	
+	/*
+	 * Carrega contatos do usuário
+	 */
+	var inicia = function() {
+		var promise = new Promise(function(resolve, reject) {
+			carregaContatos(resolve);
+		});
+		
+		promise.then(function() {
+			conectaWebSocket();
+			setInterval(function() {
+				carregaSolicitacoesAmizade();
+			}, 60 * 1000);
+		});
+	}
+	
+	inicia();
 }]);
