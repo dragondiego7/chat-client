@@ -49,6 +49,7 @@ angular.module("chat.home", []).config(
 		var presenca = {
 			tipo : "mensagem-presenca",
 			corpo : {
+				"id": $scope.usuario.id,
 				"login" : $scope.usuario.login,
 				"status" : 1
 			}
