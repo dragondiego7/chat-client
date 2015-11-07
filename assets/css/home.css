@@ -157,4 +157,23 @@ div.form-procurar {
 	    background-color: #f8f8f8;
 	    padding-top: 3%;
 	}		
+	
+	.navbar .navbar-collapse {
+		width: 100%;
+	    float: right;
+	    position: absolute;
+	    z-index: 1000;
+	}
+	
+	.navbar .navbar-collapse ul {
+	    z-index: 100;
+	    width: 40%;
+	    float: right;
+	    margin-top: -2px;
+    }
+    
+    .navbar .navbar-collapse ul li {
+    	background-color: #f8f8f8;
+	    border: 1px solid #e7e7e7;
+    }
 }
