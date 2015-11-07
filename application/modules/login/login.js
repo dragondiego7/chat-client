@@ -1,10 +1,11 @@
 "use strict";
 
 angular.module("chat.login", [])
-.controller("LoginController", ["$scope", "$http", "$cookies", "$location", "config", function($scope, $http, $cookies, $location, config) {
+.controller("LoginController", ["$scope", "$http", "$location", "config", function($scope, $http, $location, config) {
 		
 	// Verifica se o usuário está logado
-	if ($cookies.get("access_token") !== undefined) {
+	var access_token = localStorage.getItem("access_token");
+	if (access_token != null) {
 		$location.path("/");
 	}
 	
@@ -19,12 +20,12 @@ angular.module("chat.login", [])
 		
 		$http.post(config.API.url + '/autenticacao', request).then(function(response) {
 			if(response.data.access_token !== undefined) {
-				$cookies.put("access_token", response.data.access_token);
-				$cookies.put("refresh_token", response.data.refresh_token);
+				localStorage.setItem("access_token", response.data.access_token);
+				localStorage.setItem("refres_token", response.data.refresh_token);
 				
 				usuarioLogin.id = response.data.user_id;
 				
-				$cookies.putObject("usuario", usuarioLogin);
+				localStorage.setItem("usuario", JSON.stringify(usuarioLogin));
 				$location.path("/");
 			}
 			
@@ -40,7 +41,6 @@ angular.module("chat.login", [])
 		
 		$http.post(config.API.url + '/usuario', copiaDeUsuario).then(function(response) {
 			if(response.data.success) {
-				console.log(usuario);
 				$scope.entrar(usuario);
 			} else {
 				$scope.cadastrarErrorMsg = response.data.mensagem;
@@ -58,17 +58,19 @@ function($routeProvider, $httpProvider) {
 	});
 		
 	// Adiciona uma função ao interceptador de requisições para verificar se o usuário está lgado
-	$httpProvider.interceptors.push(["$q", "$location", "$cookies",
-	function($q, $location, $cookies) {
+	$httpProvider.interceptors.push(["$q", "$location",
+	function($q, $location) {
 		return {
 			'request' : function(config) {				
 				// Verifica se o usuário está logado
-				if ($cookies.get("access_token") === undefined) {
+				var access_token = localStorage.getItem("access_token");
+				
+				if (access_token === null) {
 					$location.path("/login");
 				}
-
+				
 				// Caso ele esteja, adicionar o token ao header de todas as requisições
-				$httpProvider.defaults.headers.common['Authorization'] = 'Bearer ' + $cookies.access_token;
+				$httpProvider.defaults.headers.common['Authorization'] = 'Bearer ' + access_token;
 				return config;
 			}
 		};

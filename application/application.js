@@ -1,17 +1,17 @@
 "use strict";
 
 angular.module("chat",
-		[ "ngRoute", "ngCookies", "ngTouch", "chat.login", "chat.home" ])
+		[ "ngRoute", "ngTouch", "chat.login", "chat.home" ])
 		.constant("config", {
 			"API": {
-				"url": "http://api.chat.com.br/api/v1",
+				"url": "http://192.168.43.5:8080/api/public/index.php/v1",
 				"credenciais": {
 					"client_id": "clienteweb",
 					"client_secret": "gf155c44"
 				}
 			},
 			"SERVER": {
-				"addr": "http://chat.com.br:3000"
+				"addr": "http://192.168.43.5:3000"
 			}
 		})
 		.directive('myKeypressEnter', function() {

@@ -3,7 +3,6 @@ html, body {
 	margin-top: 1%;
 	padding: 0px;
 	height: 100%;
-	overflow: hidden;
 }
 
 .container {
@@ -57,7 +56,7 @@ html, body {
 }
 
 .col-right .chat .mensagens {
-	height: 80%;
+	height: 70%;
 	overflow-y: scroll;
 }
 
@@ -116,6 +115,17 @@ html, body {
 	z-index: 1000;
 }
 
+.carregandoMensagens {
+	width: 100%;
+	height: auto;
+	text-align: center;	
+}
+
+.carregandoMensagens .img-carregando {
+	height: 1.5em;
+	z-index: 1000;
+}
+
 .limpa-procurar {
 	cursor: pointer;
 }
@@ -136,14 +146,45 @@ button.close {
 	margin-top: -30%;
 }
 
+#modal-historico .mensagens {
+	height: 500px
+}
+
+.btn-historico {
+	text-align: center;
+}
+
+.logo {
+	text-align: center;
+	padding-top: 20%;
+}
+
+.logo span {
+	font-size: 2em;
+	font-weight: bolder;
+}
+
+.home {
+	margin-top: 60px;	
+}
+
+div.form-procurar {
+	text-align: center;
+}
+
 @media ( max-width : 768px) {
 	html, body {
 		margin-top: 0px;
+		overflow: hidden;
 	}
 	.content {
 		height: 100%;
 	}
 	.col-right .perfil-destinatario img {
 		width: 64px;
+		margin-top: 30px;
+	}
+	.contatos {
+		margin-top: 30px;	
 	}
 }

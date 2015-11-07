@@ -1,15 +1,40 @@
+<nav class="navbar navbar-fixed-top navbar-default">
+	<div class="container-fluid">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed"
+				data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+				aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span> <span
+					class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="#/"><img src="http://192.168.43.5:8080/assets/img/chat.png" height="20" /></a>
+		</div>
+
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse navbar-right"
+			id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				<li><a href="javascript:void(0)" ng-click="logout()">Sair</a></li>
+			</ul>
+		</div>
+		<!-- /.navbar-collapse -->
+	</div>
+	<!-- /.container-fluid -->
+</nav>
 <div class="row home content">
 	<div class="col-left col-xs-12 col-sm-4 col-md-3">
 		<div class="row form-procurar">
 			<form class="form">
-				<div class="form-group col-sm-10 procurar">
+				<div class="form-group col-xs-9 col-sm-10 procurar">
 					<input type="text" ng-model="contatoProcurado" class="form-control"
 						placeholder="Procurar..."> <i
 						ng-show="contatoProcurado.length > 0"
 						class="limpa-procurar glyphicon glyphicon-remove form-control-feedback"
 						ng-click="limpaBusca()"></i>
 				</div>
-				<div class="form-group col-sm-2">
+				<div class="form-group col-xs-3 col-sm-2">
 					<button type="button" class="btn btn-info"
 						ng-click="contatoProcurado.length > 0 && procuraContato('{{contatoProcurado}}')">
 						<span class="glyphicon glyphicon-search"></span>
@@ -105,8 +130,12 @@
 		</div>
 		<div class="row chat">
 			<div id="mensagens" class="form-group col-sm-12 offset-0 mensagens">
-				<div class="col-xs-6 mensagem {{mensagem.tipo}}"
-					ng-repeat="mensagem in destinatario.historico">
+				<div class="carregandoMensagens" style="display: none">
+					<img src="assets/img/carregando.gif" class="img-carregando">
+				</div>
+				<div class="col-xs-12 mensagem {{mensagem.tipo}}"
+					ng-repeat="mensagem in destinatario.historico"
+					title="{{mensagem.corpo.dtHrMensagem}}">
 					<p
 						ng-class="{'bg-success': mensagem.tipo == 'mensagem-recebida', 'bg-info': mensagem.tipo == 'mensagem-enviada'}">{{mensagem.corpo.mensagem}}</p>
 				</div>
@@ -137,6 +166,23 @@
 		</div>
 	</div>
 </div>
+<div class="modal fade" role="dialog" id="modal-historico"
+	aria-labelledby="gridSystemModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<img src="{{destinatario.avatar}}" />
+			<h4>{{destinatario.login}}</h4>
+			<div class="modal-body mensagens"></div>
+			<div class="modal-footer"></div>
+		</div>
+	</div>
+</div>
 <div class="modal fade" role="dialog" id="modal-msg-erro"
 	aria-labelledby="gridSystemModalLabel">
 	<div class="modal-dialog" role="document">
@@ -146,13 +192,14 @@
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title" id="gridSystemModalLabel">Erro ao conectar-se com o servidor</h4>
+				<h4 class="modal-title" id="gridSystemModalLabel">Erro ao
+					conectar-se com o servidor</h4>
 			</div>
-			<div class="modal-body">
-				Que pena =/ não foi possível se conectar. Tente novamente mais tarde!
-			</div>
+			<div class="modal-body">Que pena =/ não foi possível se
+				conectar. Tente novamente mais tarde!</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="logout()">OK</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal"
+					ng-click="logout()">OK</button>
 			</div>
 		</div>
 		<!-- /.modal-content -->
