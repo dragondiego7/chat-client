@@ -2,6 +2,11 @@ html, body {
 	overflow: hidden;
 }
 
+.home {
+	margin-top: 60px;
+	height: calc(100% - 60px);
+}
+
 .home .col-left, .home .col-right {
 	height: 100%;
 }
@@ -136,7 +141,7 @@ html, body {
 }
 
 .home {
-	margin-top: 60px;	
+	margin-top: 60px;
 }
 
 div.form-procurar {
