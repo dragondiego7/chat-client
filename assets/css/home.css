@@ -34,7 +34,7 @@ html, body {
 }
 
 .col-right .perfil-destinatario {
-	height: 15%;
+	height: 20%;
 }
 
 .col-right .chat {
@@ -191,4 +191,7 @@ div.form-procurar {
 	    border-top: 0px;
     }
     
+    .col-right .perfil-destinatario {
+		height: 15%;
+	}
 }
