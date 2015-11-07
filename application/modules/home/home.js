@@ -83,6 +83,7 @@ angular.module("chat.home", []).config(
 				mensagemChat.tipo = "mensagem-recebida";
 				$scope.contatos[chave].historico.push(mensagemChat);
 				$scope.contatos[chave].historicoOffset++;
+				mensagens.animate({'scrollTop': mensagens.prop('scrollHeight')}, 100);
 			}
 		});
 		
@@ -92,6 +93,7 @@ angular.module("chat.home", []).config(
 	$scope.exibeContatos = function() {
 		$('.col-left').toggleClass('hidden-xs');
 		$('.col-right').toggleClass('hidden-xs');
+		$scope.destinatario = null;
 	}
 
 	var carregaHistorico = function(loginDestinatario, limit, offset, callback) {
