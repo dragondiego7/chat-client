@@ -15,16 +15,10 @@
 
 		<!-- Collect the nav links, forms, and other content for toggling -->
 		<div class="collapse navbar-collapse navbar-right"
-			id="bs-example-navbar-collapse-1" ng-hidden="::destinatario">
+			id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
-				<li><a href="javascript:void(0)" ng-click="logout()">Sair</a></li>
-			</ul>
-		</div>
-		
-		<div class="collapse navbar-collapse navbar-right visible-xs-block"
-			id="bs-example-navbar-collapse-1" ng-show="::destinatario">
-			<ul class="nav navbar-nav">
-				<li><a href="javascript:void(0)" ng-click="logout()">Bloquear contato</a></li>
+				<li ng-hidden="::destinatario"><a href="javascript:void(0)" ng-click="logout()">Sair</a></li>
+				<li ng-show="::destinatario" class="visible-xs-block"><a href="javascript:void(0)" ng-click="logout()">Bloquear contato</a></li>
 			</ul>
 		</div>
 		<!-- /.navbar-collapse -->
