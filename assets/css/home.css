@@ -46,7 +46,8 @@ html, body {
 }
 
 .col-right .chat .mensagens {
-	height: 86%;
+	height: 82%;
+	margin-top: 4%;
 	overflow-y: scroll;
 }
 
