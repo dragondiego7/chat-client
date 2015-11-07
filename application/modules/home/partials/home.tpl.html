@@ -141,18 +141,20 @@
 						ng-class="{'bg-success': mensagem.tipo == 'mensagem-recebida', 'bg-info': mensagem.tipo == 'mensagem-enviada'}">{{mensagem.corpo.mensagem}}</p>
 				</div>
 			</div>
-			<form name="formChat" ng-submit="enviaMensagem(destinatario)">
-				<div class="form-group col-xs-12 offset-0">
-					<div class="input-group">
-						<textarea class="form-control" id="mensagem" name="mensagem"
-							ng-model="mensagem" required="required" ng-minlength="1"
-							ng-trim="true" rows="2"
-							my-keypress-enter="formChat.$valid && enviaMensagem(destinatario)"></textarea>
-						<div class="input-group-addon" id="btn-enviar"
-							ng-click="formChat.$valid && enviaMensagem(destinatario)">Enviar</div>
+			<div id="entrada-mensagem">
+				<form id="entrada-mensagem" name="formChat" ng-submit="enviaMensagem(destinatario)">
+					<div class="form-group col-xs-12 offset-0">
+						<div class="input-group">
+							<textarea class="form-control" id="mensagem" name="mensagem"
+								ng-model="mensagem" required="required" ng-minlength="1"
+								ng-trim="true" rows="2"
+								my-keypress-enter="formChat.$valid && enviaMensagem(destinatario)"></textarea>
+							<div class="input-group-addon" id="btn-enviar"
+								ng-click="formChat.$valid && enviaMensagem(destinatario)">Enviar</div>
+						</div>
 					</div>
-				</div>
-			</form>
+				</form>
+			</div>
 		</div>
 	</div>
 	<div ng-hide="::destinatario"
