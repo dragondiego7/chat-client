@@ -141,16 +141,13 @@ div.form-procurar {
 	text-align: center;
 }
 
-.col-right .perfil-destinatario {
+.col-right .perfil-destinatario h4 {
 	margin-top: 5%;
 }
 
 @media ( max-width : 768px) {
 	.col-right .perfil-destinatario img {
 		width: 64px;
-	}
-	.contatos {
-		margin-top: 30px;	
 	}
 	#entrada-mensagem {
 	    position: fixed;
