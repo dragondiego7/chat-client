@@ -58,6 +58,7 @@ html, body {
 }
 
 .mensagens {
+	height: 85%;
 	font-size: 1.4em;
 }
 
@@ -85,7 +86,7 @@ html, body {
 	resize: none;
 }
 
-#entrada-mensagem {
+div #entrada-mensagem {
 	height: 15%;
 }
 
