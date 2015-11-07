@@ -22,7 +22,7 @@ button.close {
 		margin-top: 0px;
 		overflow: hidden;
 	}
-	.content {
+	.container, .content {
 		height: 100%;
 	}
 }
