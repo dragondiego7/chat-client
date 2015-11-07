@@ -1,0 +1,33 @@
+.pg-login input {
+	margin-bottom: 1%;
+}
+
+.logo {
+	text-align: center;
+	padding-top: 20%;
+}
+
+.logo span {
+	font-size: 2em;
+	font-weight: bolder;
+}
+
+@media ( max-width : 768px) {
+	.pg-login .login {
+		margin-top: 20%;
+	}
+}
+
+@media ( min-width: 769px) {
+	.logo {
+		text-align: left;
+	}
+	
+	.pg-login .login {
+		margin-top: 30%;
+	}
+	
+	.pg-login .cadastrar-se {
+		margin-top: 10%;
+	}
+}

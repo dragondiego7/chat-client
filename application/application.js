@@ -4,14 +4,14 @@ angular.module("chat",
 		[ "ngRoute", "ngTouch", "chat.login", "chat.home" ])
 		.constant("config", {
 			"API": {
-				"url": "http://192.168.43.5:8080/api/public/index.php/v1",
+				"url": "http://ledo-tulio.ddns.net/api/public/index.php/v1",
 				"credenciais": {
 					"client_id": "clienteweb",
-					"client_secret": "gf155c44"
+					"client_secret": "afat55"
 				}
 			},
 			"SERVER": {
-				"addr": "http://192.168.43.5:3000"
+				"addr": "http://54.232.218.190:3002"
 			}
 		})
 		.directive('myKeypressEnter', function() {

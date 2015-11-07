@@ -1,8 +1,13 @@
+<link rel="stylesheet" type="text/css" href="assets/css/login.css" />   
 <div class="row pg-login content">
-	<div class="col col-left hidden-xs col-md-7 col-sm-8 col-lg-6"></div>
+	<div class="col col-left hidden-xs col-sm-6 col-md-6 col-sm-6 col-lg-6">
+		<div class="logo hidden-xs">
+			<span>Chat  </span><img src="assets/img/chat.png" />
+		</div>
+	</div>
 	<div
-		class="col col-right col-xs-10 col-xs-offset-1 col-md-4 col-sm-4 col-lg-3">
-		<div class="logo hidden-md">
+		class="col col-right col-xs-10 col-xs-offset-1 col-sm-4 col-sm-4 col-lg-3">
+		<div class="logo visible-xs-block">
 			<span>Chat  </span><img src="assets/img/chat.png" />
 		</div>
 		<div class="login centered" ng-init="exibeLogin = 1">
@@ -20,8 +25,8 @@
 							ng-model="login.senha" class="form-control"
 							placeholder="Digite sua senha">
 					</div>
-					<div class="form-group">
-						<button type="button" id="btn-entrar" class="btn btn-success"
+					<div class="form-group col-xs-14">
+						<button type="button" id="btn-entrar" class="btn btn-success col-xs-12"
 							ng-click="entrar(login)">Entrar</button>
 					</div>
 				</fieldset>
@@ -75,8 +80,8 @@
 							aria-hidden="true"
 							ng-show="(formCadastrar.$submitted || formCadastrar.confirmaSenha.$touched) && formCadastrar.confirmaSenha.$valid"></span>
 					</div>
-					<div class="form-group">
-						<button type="submit" id="btn-cadastrar" class="btn btn-primary">Cadastrar-se</button>
+					<div class="form-group col-xs-14">
+						<button type="submit" id="btn-cadastrar" class="btn btn-primary col-xs-12">Cadastrar-se</button>
 					</div>
 				</fieldset>
 			</form>
