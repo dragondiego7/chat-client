@@ -50,7 +50,7 @@
 			</div>
 			<ul class="list-group lista-de-contatos">
 				<li class="list-group-item solicitacao-amizade"
-					ng-repeat="contato in solicitacoesAmizade"
+					ng-repeat="contato in solicitacoesAmizadeRecebidas"
 					data-contato-id="{{ contato.id }}" ng-show="contato.ignora != 1">
 					<div class="media">
 						<div class="media-left">
@@ -62,10 +62,10 @@
 							<p>solicitou amizade</p>
 							<span class="label label-info btn-aceitar-amizade"
 								ng-click="aceitaSolicitacaoAmizade(contato)"
-								data-solicitacao-id="{{contato.id}}">aceitar</span> <span
+								data-solicitacao-id="{{contato.solicitacao.id}}">aceitar</span> <span
 								class="label label-danger btn-recusar-amizade"
 								ng-click="recusaSolicitacaoAmizade(contato)"
-								data-solicitacao-id="{{contato.id}}">recusar</span>
+								data-solicitacao-id="{{contato.solicitacao.id}}">recusar</span>
 						</div>
 					</div>
 					<button type="button" class="close"

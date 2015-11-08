@@ -11,7 +11,7 @@ angular.module("chat",
 				}
 			},
 			"SERVER": {
-				"addr": "http://54.232.218.190:3002"
+				"addr": "http://ledo-tulio.ddns.net:3002"
 			}
 		})
 		.directive('myKeypressEnter', function() {
