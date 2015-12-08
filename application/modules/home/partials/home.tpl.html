@@ -10,15 +10,15 @@
 					class="icon-bar"></span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="#/"><img src="assets/img/chat.png" class="" height="20" /></a>
+			<a class="navbar-brand" href="#/"><img src="assets/img/chat.png"
+				class="" height="20" /></a>
 		</div>
 
 		<!-- Collect the nav links, forms, and other content for toggling -->
 		<div class="collapse navbar-collapse navbar-right"
 			id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
-				<li ng-hide="::destinatario"><a href="javascript:void(0)" ng-click="logout()">Sair</a></li>
-				<li ng-show="::destinatario" class="visible-xs-block"><a href="javascript:void(0)" ng-click="logout()">Bloquear contato</a></li>
+				<li><a href="javascript:void(0)" ng-click="logout()">Sair</a></li>
 			</ul>
 		</div>
 		<!-- /.navbar-collapse -->
@@ -62,10 +62,13 @@
 							<p>solicitou amizade</p>
 							<span class="label label-info btn-aceitar-amizade"
 								ng-click="aceitaSolicitacaoAmizade(contato)"
-								data-solicitacao-id="{{contato.solicitacao.id}}">aceitar</span> <span
-								class="label label-danger btn-recusar-amizade"
+								data-solicitacao-id="{{contato.solicitacao.id}}">aceitar</span>
+							<span class="label label-danger btn-recusar-amizade"
 								ng-click="recusaSolicitacaoAmizade(contato)"
 								data-solicitacao-id="{{contato.solicitacao.id}}">recusar</span>
+						<div class="carregandoSolicitacao" style="display: none">
+								<img src="assets/img/carregando.gif" class="img-carregando">
+							</div>
 						</div>
 					</div>
 					<button type="button" class="close"
@@ -84,14 +87,17 @@
 						</div>
 						<div class="media-body">
 							<h4 class="media-heading">{{ contato.login }}</h4>
-							<span ng-show="{{contato.solicitacaoPendente == null}}"
+							<span ng-show="contato.solicitacaoPendente == null"
 								class="label label-info btn-adicionar"
 								ng-click="adicionaContato(contato)"
 								data-contato-id="{{ contato.id }}">+ adicionar</span> <span
-								ng-show="{{contato.solicitacaoPendente != null}}"
+								ng-show="contato.solicitacaoPendente != null"
 								class="label label-danger btn-cancelar-solicitacao"
 								ng-click="cancelaSolicitacaoAmizade(contato)"
-								data-contato-id="{{ contato.id }}">- cancelar solicitacao</span>
+								data-contato-id="{{ contato.id }}">cancelar solicitacao</span>
+							<div class="carregandoSolicitacao" style="display: none">
+								<img src="assets/img/carregando.gif" class="img-carregando">
+							</div>
 						</div>
 					</div>
 				</li>
@@ -143,7 +149,8 @@
 				</div>
 			</div>
 			<div id="entrada-mensagem">
-				<form id="entrada-mensagem" name="formChat" ng-submit="enviaMensagem(destinatario)">
+				<form id="entrada-mensagem" name="formChat"
+					ng-submit="enviaMensagem(destinatario)">
 					<div class="form-group col-xs-12 offset-0">
 						<div class="input-group">
 							<textarea class="form-control" id="mensagem" name="mensagem"

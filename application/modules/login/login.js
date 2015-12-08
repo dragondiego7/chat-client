@@ -11,19 +11,27 @@ angular.module("chat.login", [])
 	
 	$scope.entrar = function(usuarioLogin) {
 		var request = {
+			url: config.API.url + '/autenticacao',
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+			},
+			data: $.param({
 				"grant_type": "password",
 				"login": usuarioLogin.login,
 				"senha": usuarioLogin.senha,
 				"client_id": config.API.credenciais.client_id,
 				"client_secret": config.API.credenciais.client_secret
+			})
 		}
 		
-		$http.post(config.API.url + '/autenticacao', request).then(function(response) {
+		$http(request).then(function(response) {
 			if(response.data.access_token !== undefined) {
 				localStorage.setItem("access_token", response.data.access_token);
 				localStorage.setItem("refres_token", response.data.refresh_token);
 				
 				usuarioLogin.id = response.data.user_id;
+				delete usuarioLogin.senha;
 				
 				localStorage.setItem("usuario", JSON.stringify(usuarioLogin));
 				$location.path("/");

@@ -111,6 +111,15 @@ div #entrada-mensagem {
 	z-index: 1000;
 }
 
+.carregandoSolicitacao {
+	display: inline;
+	height: 1em;
+}
+
+.carregandoSolicitacao img {
+	height: 1em;
+}
+
 .carregandoMensagens {
 	width: 100%;
 	height: auto;
@@ -194,4 +203,5 @@ div.form-procurar {
     .col-right .perfil-destinatario {
 		height: 15%;
 	}
+		
 }

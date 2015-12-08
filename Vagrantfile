@@ -12,7 +12,8 @@ Vagrant.configure(2) do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  config.vm.box = "ubuntu"
+  config.vm.box = "debian"
+  config.vm.box_url = "https://dl.dropboxusercontent.com/u/3523744/boxes/debian-8.1-amd64-lxc-puppet/debian-8.1-lxc-puppet.box"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -22,7 +23,7 @@ Vagrant.configure(2) do |config|
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
-  config.vm.network "forwarded_port", guest: 80, host: 8082
+  config.vm.network "forwarded_port", guest: 80, host: 8080
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -31,25 +32,27 @@ Vagrant.configure(2) do |config|
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
   # your network.
-  config.vm.network "public_network"
+  config.vm.network "public_network", ip: "192.168.0.150"
 
   # Share an additional folder to the guest VM. The first argument is
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-  config.vm.synced_folder "./", "/var/www/html/"
+  config.vm.synced_folder "./", "/var/www/html"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
   # Example for VirtualBox:
   #
-  # config.vm.provider "virtualbox" do |vb|
+  config.vm.provider "virtualbox" do |vb|
   #   # Display the VirtualBox GUI when booting the machine
-  #   vb.gui = true
+  #  vb.gui = true
+    vb.customize ["modifyvm", :id, "--usb", "off"]
+    vb.customize ["modifyvm", :id, "--usbehci", "off"]
   #
   #   # Customize the amount of memory on the VM:
   #   vb.memory = "1024"
-  # end
+  end
   #
   # View the documentation for the provider you are using for more
   # information on available options.
@@ -67,5 +70,42 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", inline: <<-SHELL
     sudo apt-get update
     sudo apt-get install -y apache2
+    sudo apt-get install -y apache2.2-common
+    sudo apt-get install -y sqlite3
+    sudo apt-get install -y php5
+    sudo apt-get install -y php5-sqlite
+cat > /etc/apache2/sites-available/000-default.conf << EOF
+<VirtualHost *:80>
+	\# The ServerName directive sets the request scheme, hostname and port that
+	\# the server uses to identify itself. This is used when creating
+	\# redirection URLs. In the context of virtual hosts, the ServerName
+	\# specifies what hostname must appear in the request's Host: header to
+	\# match this virtual host. For the default virtual host (this file) this
+	\# value is not decisive as it is used as a last resort host regardless.
+	\# However, you must set it for any further virtual host explicitly.
+	\#ServerName www.example.com
+	ServerAdmin webmaster@localhost
+	DocumentRoot /var/www/html
+	
+	<Directory /var/www/html/>
+		AllowOverride All
+	</Directory>
+	\# Available loglevels: trace8, ..., trace1, debug, info, notice, warn,
+	\# error, crit, alert, emerg.
+	\# It is also possible to configure the loglevel for particular
+	\# modules, e.g.
+	\#LogLevel info ssl:warn
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+	\# For most configuration files from conf-available/, which are
+	\# enabled or disabled at a global level, it is possible to
+	\# include a line for only one particular virtual host. For example the
+	\# following line enables the CGI configuration for this host only
+	\# after it has been globally disabled with "a2disconf".
+	\#Include conf-available/serve-cgi-bin.conf
+</VirtualHost>
+\# vim: syntax=apache ts=4 sw=4 sts=4 sr noet 	
+EOF
+    sudo a2enmod rewrite
   SHELL
 end
