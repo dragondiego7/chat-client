@@ -32,7 +32,7 @@ Vagrant.configure(2) do |config|
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
   # your network.
-  config.vm.network "public_network", ip: "192.168.0.150"
+  config.vm.network "public_network", bridge: "eth0", ip: "192.168.0.150"
 
   # Share an additional folder to the guest VM. The first argument is
   # the path on the host to the actual folder. The second argument is
@@ -107,5 +107,12 @@ cat > /etc/apache2/sites-available/000-default.conf << EOF
 \# vim: syntax=apache ts=4 sw=4 sts=4 sr noet 	
 EOF
     sudo a2enmod rewrite
+    cd /tmp
+    wget https://nodejs.org/dist/v5.2.0/node-v5.2.0-linux-x64.tar.gz 
+    tar xvf node-v5.2.0-linux-x64.tar.gz 
+    sudo mkdir /opt/node
+    sudo mv node-v5.2.0-linux-x64 /opt/node/
+    sudo update-alternatives --install /usr/bin/node node /opt/node/node-v5.2.0-linux-x64/bin/node 1000
+    sudo update-alternatives --install /usr/bin/npm npm /opt/node/node-v5.2.0-linux-x64/bin/npm 1000
   SHELL
 end

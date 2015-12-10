@@ -2,7 +2,7 @@
 <div class="row pg-login content">
 	<div class="col col-left hidden-xs col-sm-6 col-md-6 col-sm-6 col-lg-6">
 		<div class="logo hidden-xs">
-			<span>Chat  </span><img src="assets/img/chat.png" />
+			<span>Clara Messenger  </span><img src="assets/img/chat.png" />
 		</div>
 	</div>
 	<div
@@ -11,23 +11,23 @@
 			<span>Chat  </span><img src="assets/img/chat.png" />
 		</div>
 		<div class="login centered" ng-init="exibeLogin = 1">
-			<form name="formLogin">
+			<form name="formLogin" ng-submit="formLogin.$valid && cadastrar(novoUsuario)" nosubmit>
 				<fieldset>
 					<legend>Login</legend>
 					<div ng-show="loginErrorMsg" class="alert alert-danger" role="alert">
 						{{loginErrorMsg}}</div>
 					<div class="form-group col-xs-14">
 						<input type="text" id="login" name="login" ng-model="login.login"
-							class="form-control" placeholder="Digite seu login">
+							class="form-control" placeholder="Digite seu login" required>
 					</div>
 					<div class="form-group col-xs-14">
 						<input type="password" id="senha" name="senha"
 							ng-model="login.senha" class="form-control"
-							placeholder="Digite sua senha">
+							placeholder="Digite sua senha" required>
 					</div>
 					<div class="form-group col-xs-14">
 						<button type="button" id="btn-entrar" class="btn btn-success col-xs-12"
-							ng-click="entrar(login)">Entrar</button>
+							ng-click="entrar(login)">Entrar <img class="carregandoLogin" src="assets/img/loading_apple.gif"></button>
 					</div>
 				</fieldset>
 			</form>
@@ -45,7 +45,7 @@
 						<input type="text" id="login" name="login"
 							ng-model="novoUsuario.login" class="form-control"
 							required="required" ng-minlength="8" ng-maxlength="14"
-							placeholder="Digite seu login"> <span
+							placeholder="Digite seu login" data-toggle="tooltip" data-placement="bottom" title="{{ (formCadastrar.$submitted || formCadastrar.login.$touched) && !formCadastrar.login.$valid ? 'Seu nome de usuário deve conter de 8 a 14 caracteres' : ''}}"> <span
 							ng-show="(formCadastrar.$submitted || formCadastrar.login.$touched) && !formCadastrar.login.$valid"
 							class="glyphicon glyphicon-remove form-control-feedback"
 							aria-hidden="true"></span> <span
@@ -57,8 +57,8 @@
 						ng-class="{'has-error has-feedback': (formCadastrar.$submitted || formCadastrar.senha.$touched) && !formCadastrar.senha.$valid, 'has-success has-feedback': (formCadastrar.$submitted || formCadastrar.senha.$touched) && formCadastrar.senha.$valid}">
 						<input type="password" id="senha" name="senha"
 							ng-model="novoUsuario.senha" class="form-control"
-							required="required" ng-minlength="8" ng-maxlength="14"
-							placeholder="Digite sua senha"> <span
+							required="required" ng-minlength="4" ng-maxlength="8"
+							placeholder="Digite sua senha" data-toggle="tooltip" data-placement="bottom" title="{{ (formCadastrar.$submitted || formCadastrar.senha.$touched) && !formCadastrar.senha.$valid ? 'Sua senha deve conter de 4 a 8 caracteres' : ''}}"> <span
 							ng-show="(formCadastrar.$submitted || formCadastrar.senha.$touched) && !formCadastrar.senha.$valid"
 							class="glyphicon glyphicon-remove form-control-feedback"
 							aria-hidden="true"></span> <span
@@ -72,7 +72,7 @@
 							class="form-control"
 							ng-model="novoUsuario.confirmaSenha"
 							my-password-check="novoUsuario.senha"
-							placeholder="Confirme sua senha"> <span
+							placeholder="Confirme sua senha" data-toggle="tooltip" data-placement="bottom" title="{{ (formCadastrar.$submitted || formCadastrar.confirmaSenha.$touched) && !formCadastrar.confirmaSenha.$valid ? 'Senha e confirmação de senha não conferem' : ''}}"> <span
 							ng-show="(formCadastrar.$submitted || formCadastrar.confirmaSenha.$touched) && !formCadastrar.confirmaSenha.$valid"
 							class="glyphicon glyphicon-remove form-control-feedback"
 							aria-hidden="true"></span> <span
@@ -81,7 +81,7 @@
 							ng-show="(formCadastrar.$submitted || formCadastrar.confirmaSenha.$touched) && formCadastrar.confirmaSenha.$valid"></span>
 					</div>
 					<div class="form-group col-xs-14">
-						<button type="submit" id="btn-cadastrar" class="btn btn-primary col-xs-12">Cadastrar-se</button>
+						<button type="submit" id="btn-cadastrar" class="btn btn-primary col-xs-12">Cadastrar-se <img class="carregandoCadastro" src="assets/img/loading_apple.gif"></button>
 					</div>
 				</fieldset>
 			</form>
@@ -95,5 +95,7 @@
 			$("div.login").toggleClass("hidden-xs");
 			$("div.cadastrar-se").toggleClass("hidden-xs");
 		});
+		
+		$('[data-toggle="tooltip"]').tooltip();
 	});
 </script>

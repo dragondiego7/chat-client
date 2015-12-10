@@ -10,6 +10,14 @@ angular.module("chat.login", [])
 	}
 	
 	$scope.entrar = function(usuarioLogin) {
+		$('.carregandoLogin').css('display', 'block');
+		
+		if(usuarioLogin == undefined) {
+			$scope.loginErrorMsg = "Por favor, preencha os campos login e senha";
+			$('.carregandoLogin').css('display', 'none');
+			return;
+		}
+		
 		var request = {
 			url: config.API.url + '/autenticacao',
 			method: 'POST',
@@ -38,12 +46,16 @@ angular.module("chat.login", [])
 			}
 			
 			$scope.loginErrorMsg = "Login/senha inválido";
+			$('.carregandoLogin').css('display', 'none');
 		}, function() {
 			$scope.loginErrorMsg = "Serviço temporáriamente indisponível";
+			$('.carregandoLogin').css('display', 'none');
 		});
 	}
 	
 	$scope.cadastrar = function(usuario) {
+		$('.carregandoCadastro').css('display', 'block');
+		
 		var copiaDeUsuario = angular.copy(usuario);
 		delete copiaDeUsuario.confirmaSenha;
 		
@@ -53,8 +65,10 @@ angular.module("chat.login", [])
 			} else {
 				$scope.cadastrarErrorMsg = response.data.mensagem;
 			}
+			$('.carregandoCadastro').css('display', 'none');
 		}, function() {
 			$scope.cadastrarErrorMsg = "Serviço temporáriamente indisponível";
+			$('.carregandoCadastro').css('display', 'none');
 		});
 	}
 }])

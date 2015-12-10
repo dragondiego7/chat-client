@@ -13,6 +13,22 @@ html, body {
 	height: calc(100% - 32px);
 }
 
+.carregandoLogin {
+	position: absolute; 
+	height: 1.2em; 
+	display: none; 
+	margin-top: -7%; 
+	margin-left: 25%
+}
+
+.carregandoCadastro {
+	position: absolute; 
+	height: 1.2em; 
+	display: none; 
+	margin-top: -7%; 
+	margin-left: 20%
+}
+
 button.close {
 	margin-top: -30%;
 }

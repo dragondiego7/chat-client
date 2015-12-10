@@ -7,11 +7,11 @@ angular.module("chat",
 				"url": "http://192.168.0.150/api/public/index.php/v1",
 				"credenciais": {
 					"client_id": "clienteweb",
-					"client_secret": "gf155c44"
+					"client_secret": "afat55"
 				}
 			},
 			"SERVER": {
-				"addr": "http://192.168.0.108:3000"
+				"addr": "http://192.168.0.150:3000"
 			}
 		})
 		.directive('myKeypressEnter', function() {
